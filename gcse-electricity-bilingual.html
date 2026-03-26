@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE Electricity 电学 | AQA Physics 4.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060b14; --surface:rgba(6,14,28,0.93);
+  --elec-yellow:#fde047; --elec-blue:#38bdf8;
+  --elec-green:#4ade80; --elec-red:#f87171;
+  --elec-purple:#c084fc; --elec-orange:#fb923c;
+  --border:rgba(253,224,71,0.2); --text:#eef2ff; --muted:rgba(238,242,255,0.48);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 35%,rgba(56,189,248,0.07) 0%,transparent 55%),radial-gradient(ellipse at 85% 65%,rgba(253,224,71,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(74,222,128,0.04) 0%,transparent 45%);pointer-events:none;z-index:0;}
+.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px;}
+
+/* HEADER */
+header{text-align:center;padding:50px 20px 35px;}
+.header-badge{display:inline-block;background:rgba(253,224,71,0.1);border:1px solid var(--elec-yellow);color:var(--elec-yellow);font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:3px;padding:5px 16px;border-radius:20px;margin-bottom:18px;text-transform:uppercase;}
+h1{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:900;background:linear-gradient(135deg,var(--elec-yellow),var(--elec-blue),var(--elec-green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:10px;}
+.subtitle-cn{font-size:1.5rem;color:rgba(238,242,255,0.55);font-weight:300;letter-spacing:5px;margin-bottom:6px;}
+.subtitle-en{font-family:'Space Mono',monospace;font-size:0.75rem;color:rgba(238,242,255,0.35);letter-spacing:2px;}
+
+/* NAV */
+.nav-tabs{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:26px 0;}
+.tab-btn{background:rgba(6,14,28,0.8);border:1px solid var(--border);color:var(--muted);padding:9px 16px;border-radius:30px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-size:0.8rem;transition:all 0.3s;white-space:nowrap;}
+.tab-btn:hover,.tab-btn.active{background:rgba(253,224,71,0.1);border-color:var(--elec-yellow);color:var(--elec-yellow);box-shadow:0 0 18px rgba(253,224,71,0.15);}
+.tab-btn .cn{display:block;font-size:0.65rem;opacity:0.65;margin-top:2px;}
+
+/* SECTIONS */
+.section{display:none;animation:fadeIn 0.35s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:var(--elec-yellow);margin-bottom:5px;display:flex;align-items:center;gap:10px;}
+.section-title::before{content:'';width:4px;height:22px;background:var(--elec-yellow);border-radius:2px;display:inline-block;}
+.section-cn{color:var(--muted);font-size:0.88rem;margin-bottom:20px;padding-left:14px;}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px;margin-top:16px;}
+.concept-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:17px;cursor:pointer;transition:all 0.3s;overflow:hidden;}
+.concept-card:hover{border-color:var(--elec-yellow);box-shadow:0 0 22px rgba(253,224,71,0.1);transform:translateY(-2px);}
+.concept-card.expanded{border-color:var(--elec-blue);box-shadow:0 0 22px rgba(56,189,248,0.1);}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.card-icon{font-size:1.65rem;line-height:1;}
+.card-terms{flex:1;}
+.term-en{font-family:'Space Mono',monospace;font-size:0.88rem;color:var(--elec-yellow);font-weight:700;}
+.term-cn{font-size:1rem;color:var(--text);margin-top:3px;}
+.term-pinyin{font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:1px;}
+.expand-arrow{color:var(--muted);font-size:0.72rem;transition:transform 0.3s;margin-top:4px;}
+.concept-card.expanded .expand-arrow{transform:rotate(180deg);}
+.card-body{display:none;margin-top:13px;padding-top:13px;border-top:1px solid rgba(253,224,71,0.1);}
+.concept-card.expanded .card-body{display:block;}
+.def-en{font-size:0.82rem;color:rgba(238,242,255,0.8);line-height:1.6;margin-bottom:8px;}
+.def-cn{font-size:0.82rem;color:rgba(56,189,248,0.85);line-height:1.7;background:rgba(56,189,248,0.05);padding:8px 11px;border-radius:6px;border-left:2px solid var(--elec-blue);}
+.key-fact{margin-top:8px;font-size:0.74rem;color:var(--elec-yellow);font-family:'Space Mono',monospace;}
+
+/* CIRCUIT SYMBOLS */
+.symbols-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:16px;}
+.sym-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:all 0.3s;cursor:pointer;}
+.sym-card:hover{border-color:var(--elec-yellow);box-shadow:0 0 15px rgba(253,224,71,0.1);}
+.sym-card svg{display:block;margin:0 auto 8px;}
+.sym-en{font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--elec-yellow);}
+.sym-cn{font-size:0.82rem;color:var(--text);margin-top:3px;}
+.sym-py{font-size:0.65rem;color:var(--muted);font-style:italic;}
+
+/* SERIES/PARALLEL */
+.circuit-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:16px;}
+.circuit-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.circuit-tab{background:rgba(6,14,28,0.8);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.8rem;transition:all 0.3s;}
+.circuit-tab:hover,.circuit-tab.active{background:rgba(253,224,71,0.1);border-color:var(--elec-yellow);color:var(--elec-yellow);}
+.circuit-tab .cn{font-size:0.65rem;display:block;opacity:0.65;}
+.circuit-diagram{display:none;}
+.circuit-diagram.active{display:block;animation:fadeIn 0.25s ease;}
+.circuit-info{margin-top:16px;padding:14px 18px;background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.18);border-radius:10px;}
+.ci-title{font-family:'Space Mono',monospace;color:var(--elec-yellow);font-size:0.82rem;margin-bottom:5px;}
+.ci-rule{font-size:0.83rem;color:rgba(238,242,255,0.8);line-height:1.6;margin-bottom:4px;}
+.ci-rule-cn{font-size:0.8rem;color:rgba(56,189,248,0.7);line-height:1.7;}
+
+/* EQUATIONS */
+.eq-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:21px 24px;margin-bottom:13px;}
+.eq-name{font-size:0.98rem;color:var(--text);margin-bottom:3px;}
+.eq-name-cn{font-size:0.82rem;color:var(--muted);margin-bottom:11px;}
+.eq-formula{font-family:'Space Mono',monospace;font-size:1.35rem;color:var(--elec-yellow);text-align:center;padding:15px;background:rgba(253,224,71,0.05);border-radius:8px;margin:11px 0;letter-spacing:1px;}
+.eq-badge{display:inline-block;font-size:0.65rem;font-family:'Space Mono',monospace;padding:2px 7px;border-radius:8px;margin-left:7px;vertical-align:middle;}
+.eq-badge.recall{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.35);color:var(--elec-red);}
+.eq-badge.given{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--elec-green);}
+.eq-vars{font-size:0.8rem;color:rgba(238,242,255,0.7);line-height:1.9;}
+.eq-vars span{color:var(--elec-blue);font-family:'Space Mono',monospace;}
+.worked-ex{margin-top:13px;padding:13px 15px;background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:7px;}
+.we-title{font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--elec-green);letter-spacing:1px;margin-bottom:7px;}
+.we-body{font-size:0.8rem;color:rgba(238,242,255,0.8);line-height:1.8;}
+.we-body .step{color:var(--elec-green);font-family:'Space Mono',monospace;}
+.we-cn{font-size:0.78rem;color:rgba(74,222,128,0.6);margin-top:5px;line-height:1.6;}
+
+/* GLOSSARY */
+.search-box{width:100%;padding:11px 20px;background:rgba(6,14,28,0.8);border:1px solid var(--border);border-radius:30px;color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:0.87rem;outline:none;margin-bottom:17px;transition:border-color 0.3s;}
+.search-box:focus{border-color:var(--elec-yellow);}
+.search-box::placeholder{color:rgba(238,242,255,0.3);}
+.glossary-table{width:100%;border-collapse:collapse;}
+.glossary-table th{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--elec-yellow);text-align:left;padding:10px 13px;border-bottom:1px solid rgba(253,224,71,0.15);letter-spacing:1px;text-transform:uppercase;}
+.glossary-table td{padding:10px 13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;}
+.glossary-table tr:hover td{background:rgba(253,224,71,0.03);}
+.gl-en{font-family:'Space Mono',monospace;font-size:0.8rem;color:var(--elec-yellow);}
+.gl-cn{font-size:0.93rem;color:var(--text);margin:2px 0;}
+.gl-py{font-size:0.7rem;color:var(--muted);font-style:italic;}
+.gl-def{font-size:0.78rem;color:rgba(238,242,255,0.7);line-height:1.5;}
+.gl-def-cn{font-size:0.78rem;color:rgba(56,189,248,0.62);line-height:1.6;}
+
+/* QUIZ */
+.quiz-container{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:27px;margin-top:16px;}
+.quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:21px;}
+.progress-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin:0 13px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--elec-yellow),var(--elec-blue));border-radius:2px;transition:width 0.5s ease;}
+.progress-text{font-family:'Space Mono',monospace;font-size:0.76rem;color:var(--muted);}
+.score-display{font-family:'Orbitron',sans-serif;font-size:0.86rem;color:var(--elec-yellow);}
+.question-box{text-align:center;margin-bottom:20px;}
+.question-text{font-size:1.08rem;line-height:1.6;color:var(--text);margin-bottom:5px;}
+.question-cn{font-size:0.86rem;color:rgba(56,189,248,0.6);}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.option-btn{background:rgba(6,14,28,0.8);border:1px solid rgba(238,242,255,0.12);color:var(--text);padding:12px 13px;border-radius:10px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-size:0.81rem;text-align:left;transition:all 0.3s;line-height:1.5;}
+.option-btn:hover:not(:disabled){border-color:var(--elec-yellow);background:rgba(253,224,71,0.06);}
+.option-btn.correct{border-color:var(--elec-green);background:rgba(74,222,128,0.08);color:var(--elec-green);}
+.option-btn.wrong{border-color:var(--elec-red);background:rgba(248,113,113,0.08);color:var(--elec-red);}
+.feedback-box{padding:12px 17px;border-radius:9px;font-size:0.86rem;line-height:1.6;display:none;margin-bottom:12px;}
+.feedback-box.show{display:block;}
+.feedback-box.correct{background:rgba(74,222,128,0.07);border:1px solid var(--elec-green);color:var(--elec-green);}
+.feedback-box.wrong{background:rgba(248,113,113,0.07);border:1px solid var(--elec-red);color:var(--elec-red);}
+.next-btn{display:none;width:100%;padding:12px;background:linear-gradient(135deg,var(--elec-yellow),var(--elec-blue));border:none;border-radius:10px;color:#06080f;font-family:'Orbitron',sans-serif;font-size:0.86rem;cursor:pointer;font-weight:700;transition:all 0.3s;}
+.next-btn.show{display:block;}
+.next-btn:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 5px 18px rgba(253,224,71,0.25);}
+.quiz-result{text-align:center;padding:26px;display:none;}
+.quiz-result.show{display:block;}
+.result-score{font-family:'Orbitron',sans-serif;font-size:2.7rem;background:linear-gradient(135deg,var(--elec-yellow),var(--elec-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.result-msg{font-size:1.03rem;margin-bottom:4px;}
+.result-cn{font-size:0.86rem;color:var(--muted);margin-bottom:20px;}
+.restart-btn{padding:10px 26px;background:transparent;border:1px solid var(--elec-yellow);color:var(--elec-yellow);border-radius:30px;cursor:pointer;font-family:'Space Mono',monospace;font-size:0.8rem;transition:all 0.3s;}
+.restart-btn:hover{background:rgba(253,224,71,0.08);}
+
+.ht-badge{display:inline-block;font-size:0.62rem;font-family:'Space Mono',monospace;padding:2px 6px;border-radius:7px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.3);color:var(--elec-purple);margin-left:5px;vertical-align:middle;}
+.spec-ref{font-size:0.65rem;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:11px;}
+
+@media(max-width:600px){.options-grid{grid-template-columns:1fr;}.cards-grid{grid-template-columns:1fr;}.symbols-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-badge">GCSE Physics · Year 11 · AQA 4.2 · Higher Tier</div>
+  <h1>ELECTRICITY</h1>
+  <div class="subtitle-cn">电学</div>
+  <div class="subtitle-en">Interactive Bilingual Revision Resource · Higher Tier · 互动双语复习资源（高级）</div>
+</header>
+
+<nav class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab(event,'concepts')">Key Concepts<span class="cn">核心概念</span></button>
+  <button class="tab-btn" onclick="showTab(event,'symbols')">Circuit Symbols<span class="cn">电路符号</span></button>
+  <button class="tab-btn" onclick="showTab(event,'circuits')">Series &amp; Parallel<span class="cn">串联与并联</span></button>
+  <button class="tab-btn" onclick="showTab(event,'equations')">Equations<span class="cn">公式</span></button>
+  <button class="tab-btn" onclick="showTab(event,'glossary')">Glossary<span class="cn">词汇表</span></button>
+  <button class="tab-btn" onclick="showTab(event,'quiz')">Quiz<span class="cn">测验</span></button>
+</nav>
+
+<!-- ══ CONCEPTS ══ -->
+<div class="section active" id="section-concepts">
+  <div class="section-title">Key Concepts</div>
+  <div class="section-cn">核心概念 — Click each card to expand · 点击卡片展开</div>
+
+  <div style="background:rgba(253,224,71,0.07);border:1px solid rgba(253,224,71,0.22);border-radius:10px;padding:11px 17px;margin-bottom:16px;font-size:0.8rem;color:rgba(238,242,255,0.62);line-height:1.6;">
+    🎯 <strong style="color:var(--elec-yellow)">AQA Higher Tier 4.2</strong> — This is the largest equation topic in GCSE Physics. Higher Tier includes all Foundation content plus <span class="ht-badge">HT</span> items marked below. The spec references are shown on each card.<br>
+    <span style="font-size:0.76rem;color:rgba(253,224,71,0.55)">这是GCSE物理中方程最多的章节。高级包含所有基础内容，以及下方标注的高级内容。</span>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">⚡</div>
+        <div class="card-terms"><div class="term-en">Electric Current</div><div class="term-cn">电流</div><div class="term-pinyin">diàn liú</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">A <strong>flow of electrical charge</strong>. The size of the current is the <strong>rate of flow of charge</strong>. For charge to flow, a circuit must be <strong>closed</strong> and have a <strong>source of potential difference</strong>. In a single closed loop, current has the same value at every point.</div>
+        <div class="def-cn"><strong>电荷的流动</strong>。电流的大小是<strong>电荷流动的速率</strong>。要使电荷流动，电路必须是<strong>闭合的</strong>，并且有一个<strong>电位差来源</strong>。在单一闭合回路中，电流在每一点的值相同。</div>
+        <div class="key-fact">★ Q = It · Unit: ampere (A) 安培 · Symbol: I</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">🔋</div>
+        <div class="card-terms"><div class="term-en">Potential Difference (Voltage)</div><div class="term-cn">电位差（电压）</div><div class="term-pinyin">diàn wèi chā</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">The <strong>energy transferred per unit charge</strong> between two points in a circuit. Also called voltage. It is what drives current around a circuit. Measured in volts (V) using a <strong>voltmeter connected in parallel</strong>.</div>
+        <div class="def-cn">电路中两点之间<strong>每单位电荷转移的能量</strong>。也叫电压。它驱动电流在电路中流动。用伏特（V）测量，使用<strong>并联连接的电压表</strong>。</div>
+        <div class="key-fact">★ Unit: volt (V) 伏特 · Symbol: V · Measured with a voltmeter in parallel</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">🚧</div>
+        <div class="card-terms"><div class="term-en">Resistance</div><div class="term-cn">电阻</div><div class="term-pinyin">diàn zǔ</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">How much a component <strong>opposes the flow of current</strong>. The greater the resistance, the smaller the current for a given potential difference. Calculated using <strong>V = IR</strong>. Measured in ohms (Ω) using an <strong>ammeter and voltmeter</strong>.</div>
+        <div class="def-cn">元件<strong>阻碍电流流动</strong>的程度。电阻越大，对于给定的电位差，电流越小。用 <strong>V = IR</strong> 计算。用欧姆（Ω）测量，使用<strong>电流表和电压表</strong>。</div>
+        <div class="key-fact">★ V = IR · Unit: ohm (Ω) 欧姆 · Higher R = smaller current for same V</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">📐</div>
+        <div class="card-terms"><div class="term-en">Ohmic Conductor</div><div class="term-cn">欧姆导体</div><div class="term-pinyin">ōu mǔ dǎo tǐ</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">A component where the current is <strong>directly proportional</strong> to the potential difference (at constant temperature). This means resistance stays <strong>constant</strong>. The I-V graph is a <strong>straight line through the origin</strong>. Example: a resistor at constant temperature.</div>
+        <div class="def-cn">电流与电位差<strong>成正比</strong>（在恒温下）的元件。这意味着电阻保持<strong>不变</strong>。I-V图是一条<strong>过原点的直线</strong>。例子：恒温下的电阻器。</div>
+        <div class="key-fact">★ I-V graph: straight line through origin 过原点的直线 = ohmic 欧姆的</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">💡</div>
+        <div class="card-terms"><div class="term-en">Filament Lamp</div><div class="term-cn">灯丝灯泡</div><div class="term-pinyin">dēng sī dēng pào</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">A <strong>non-ohmic</strong> component. As current increases, the filament heats up, which <strong>increases its resistance</strong>. The I-V graph is a <strong>curved line</strong> — the gradient decreases as voltage increases. Energy is mostly wasted as heat and light.</div>
+        <div class="def-cn"><strong>非欧姆</strong>元件。随着电流增大，灯丝温度升高，从而<strong>增大其电阻</strong>。I-V图是一条<strong>曲线</strong>——随电压增大，斜率减小。大部分能量以热和光的形式散失。</div>
+        <div class="key-fact">★ I-V graph: S-shaped curve 曲线 · R increases as temperature increases</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">➡️</div>
+        <div class="card-terms"><div class="term-en">Diode</div><div class="term-cn">二极管</div><div class="term-pinyin">èr jí guǎn</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">Allows current to flow in <strong>one direction only</strong>. Has very high resistance in the reverse direction. The I-V graph shows current only flows in one direction (forward bias). Used to convert AC to DC (rectification).</div>
+        <div class="def-cn">只允许电流在<strong>一个方向流动</strong>。在反向方向有非常高的电阻。I-V图显示电流只在一个方向流动（正向偏置）。用于将交流电转换为直流电（整流）。</div>
+        <div class="key-fact">★ One-way only 单向通行 · Very high R in reverse direction 反向电阻极大</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">🌡️</div>
+        <div class="card-terms"><div class="term-en">Thermistor</div><div class="term-cn">热敏电阻</div><div class="term-pinyin">rè mǐn diàn zǔ</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">A component whose resistance <strong>decreases as temperature increases</strong>. Used in temperature-sensing circuits, e.g. thermostats. As the temperature rises, resistance falls, current increases. Useful application: automatically switching on a heater when it gets cold.</div>
+        <div class="def-cn">电阻随<strong>温度升高而减小</strong>的元件。用于温度传感电路，如温控器。温度升高时，电阻减小，电流增大。有用应用：当天气变冷时自动开启加热器。</div>
+        <div class="key-fact">★ Temperature ↑ → Resistance ↓ · Used in thermostats 温控器</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">☀️</div>
+        <div class="card-terms"><div class="term-en">LDR (Light-Dependent Resistor)</div><div class="term-cn">光敏电阻</div><div class="term-pinyin">guāng mǐn diàn zǔ</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">A component whose resistance <strong>decreases as light intensity increases</strong>. In bright light: low resistance, high current. In darkness: high resistance, low current. Application: switching street lights on when it gets dark.</div>
+        <div class="def-cn">电阻随<strong>光照强度增大而减小</strong>的元件。在强光下：低电阻，高电流。在黑暗中：高电阻，低电流。应用：天黑时自动开启路灯。</div>
+        <div class="key-fact">★ Light intensity ↑ → Resistance ↓ · Used in automatic lighting 自动照明</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">🏠</div>
+        <div class="card-terms"><div class="term-en">Mains Electricity &amp; Wiring</div><div class="term-cn">市电与接线</div><div class="term-pinyin">shì diàn yǔ jiē xiàn</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">UK mains: <strong>230 V AC at 50 Hz</strong>. Three-core cable: <strong>live (brown)</strong> — carries the alternating pd; <strong>neutral (blue)</strong> — completes the circuit at ~0 V; <strong>earth (green/yellow)</strong> — safety wire, only carries current in a fault. The live wire is dangerous even when a switch is open.</div>
+        <div class="def-cn">英国市电：<strong>230 V交流电，50 Hz</strong>。三芯电缆：<strong>火线（棕色）</strong>——携带交变电位差；<strong>零线（蓝色）</strong>——约0 V完成电路；<strong>地线（绿/黄色）</strong>——安全线，只在故障时导电。火线即使开关断开也是危险的。</div>
+        <div class="key-fact">★ Live=brown 棕 · Neutral=blue 蓝 · Earth=green/yellow 绿/黄</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">〰️</div>
+        <div class="card-terms"><div class="term-en">AC vs DC</div><div class="term-cn">交流电与直流电</div><div class="term-pinyin">jiāo liú diàn yǔ zhí liú diàn</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en"><strong>Direct current (DC)</strong>: flows in one direction only. Produced by batteries. <strong>Alternating current (AC)</strong>: the direction of current reverses repeatedly. UK mains is AC at 50 Hz (reverses 50 times per second). AC is used for mains supply because it is easier to transmit over long distances.</div>
+        <div class="def-cn"><strong>直流电（DC）</strong>：只在一个方向流动。由电池产生。<strong>交流电（AC）</strong>：电流方向反复改变。英国市电是50 Hz的交流电（每秒换向50次）。交流电用于市电供应，因为更容易长距离传输。</div>
+        <div class="key-fact">★ DC: batteries 电池 · AC: mains 市电, 50 Hz in UK</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">⚡</div>
+        <div class="card-terms"><div class="term-en">Power</div><div class="term-cn">电功率</div><div class="term-pinyin">diàn gōng lǜ</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">The <strong>rate of energy transfer</strong>. Two equations: <strong>P = VI</strong> and <strong>P = I²R</strong>. Both must be recalled. Power is measured in watts (W). A 60 W bulb transfers 60 joules of energy every second.</div>
+        <div class="def-cn"><strong>能量转移的速率</strong>。两个公式：<strong>P = VI</strong> 和 <strong>P = I²R</strong>。两个都必须记忆。功率用瓦特（W）测量。60 W灯泡每秒转移60焦耳能量。</div>
+        <div class="key-fact">★ P = VI and P = I²R · Both must be recalled 两个都必须记忆</div>
+      </div>
+    </div>
+
+    <div class="concept-card" onclick="toggleCard(this)">
+      <div class="card-header"><div class="card-icon">🔋</div>
+        <div class="card-terms"><div class="term-en">Energy Transfers</div><div class="term-cn">能量转移</div><div class="term-pinyin">néng liàng zhuǎn yí</div></div>
+        <div class="expand-arrow">▼</div></div>
+      <div class="card-body">
+        <div class="def-en">The energy transferred by an appliance depends on its <strong>power</strong> and how long it is on. Two equations: <strong>E = Pt</strong> (energy = power × time) and <strong>E = QV</strong> (energy = charge × voltage). Both must be recalled.</div>
+        <div class="def-cn">电器转移的能量取决于其<strong>功率</strong>和使用时间。两个公式：<strong>E = Pt</strong>（能量=功率×时间）和<strong>E = QV</strong>（能量=电荷×电压）。两个都必须记忆。</div>
+        <div class="key-fact">★ E = Pt and E = QV · Both must be recalled 两个都必须记忆</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ CIRCUIT SYMBOLS ══ -->
+<div class="section" id="section-symbols">
+  <div class="section-title">Circuit Symbols</div>
+  <div class="section-cn">电路符号 — AQA requires you to draw and interpret these · AQA要求你能画出并解读这些符号</div>
+
+  <div style="background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.18);border-radius:10px;padding:11px 17px;margin-bottom:16px;font-size:0.8rem;color:rgba(238,242,255,0.62);line-height:1.6;">
+    📋 You must be able to <strong style="color:white">draw and interpret</strong> all standard circuit diagram symbols (AQA 4.2.1.1). Click any symbol to see its name and function.<br>
+    <span style="font-size:0.75rem;color:rgba(56,189,248,0.55)">你必须能够<strong>画出并解读</strong>所有标准电路图符号。点击任意符号查看名称和功能。</span>
+  </div>
+
+  <div class="symbols-grid" id="symbolsGrid"></div>
+
+  <div id="symInfoBox" style="display:none;margin-top:14px;padding:14px 18px;background:rgba(253,224,71,0.06);border:1px solid rgba(253,224,71,0.2);border-radius:10px;animation:fadeIn 0.25s ease;">
+    <div id="symInfoContent"></div>
+  </div>
+</div>
+
+<!-- ══ SERIES & PARALLEL ══ -->
+<div class="section" id="section-circuits">
+  <div class="section-title">Series &amp; Parallel Circuits</div>
+  <div class="section-cn">串联与并联电路 — Click a tab to explore the rules · 点击标签探索规则</div>
+
+  <div class="circuit-box">
+    <div class="circuit-tabs">
+      <div class="circuit-tab active" onclick="showCircuit(event,'series')">Series Circuit 串联<span class="cn">电路</span></div>
+      <div class="circuit-tab" onclick="showCircuit(event,'parallel')">Parallel Circuit 并联<span class="cn">电路</span></div>
+      <div class="circuit-tab" onclick="showCircuit(event,'iv')">I-V Graphs<span class="cn">I-V图</span></div>
+    </div>
+
+    <!-- SERIES -->
+    <div class="circuit-diagram active" id="circuit-series">
+      <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;height:auto;display:block;margin:0 auto;">
+        <!-- Battery -->
+        <line x1="60" y1="60" x2="60" y2="140" stroke="rgba(238,242,255,0.3)" stroke-width="1.5"/>
+        <line x1="45" y1="80" x2="75" y2="80" stroke="var(--elec-yellow)" stroke-width="3"/>
+        <line x1="50" y1="95" x2="70" y2="95" stroke="var(--elec-yellow)" stroke-width="1.5"/>
+        <text x="60" y="155" fill="var(--elec-yellow)" font-size="10" font-family="Space Mono" text-anchor="middle">V</text>
+        <!-- Wires top & bottom -->
+        <line x1="60" y1="60" x2="520" y2="60" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <line x1="60" y1="140" x2="520" y2="140" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <line x1="520" y1="60" x2="520" y2="140" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <!-- Resistor 1 -->
+        <rect x="150" y="50" width="60" height="20" rx="3" fill="none" stroke="var(--elec-blue)" stroke-width="2"/>
+        <text x="180" y="44" fill="var(--elec-blue)" font-size="10" font-family="Space Mono" text-anchor="middle">R1</text>
+        <text x="180" y="82" fill="rgba(56,189,248,0.5)" font-size="9" font-family="Noto Sans SC" text-anchor="middle">V1</text>
+        <!-- Resistor 2 -->
+        <rect x="290" y="50" width="60" height="20" rx="3" fill="none" stroke="var(--elec-blue)" stroke-width="2"/>
+        <text x="320" y="44" fill="var(--elec-blue)" font-size="10" font-family="Space Mono" text-anchor="middle">R2</text>
+        <text x="320" y="82" fill="rgba(56,189,248,0.5)" font-size="9" font-family="Noto Sans SC" text-anchor="middle">V2</text>
+        <!-- Resistor 3 -->
+        <rect x="420" y="50" width="60" height="20" rx="3" fill="none" stroke="var(--elec-blue)" stroke-width="2"/>
+        <text x="450" y="44" fill="var(--elec-blue)" font-size="10" font-family="Space Mono" text-anchor="middle">R3</text>
+        <!-- Current arrow -->
+        <path d="M100,60 L130,60" fill="none" stroke="var(--elec-green)" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+        <text x="115" y="54" fill="var(--elec-green)" font-size="9" font-family="Space Mono" text-anchor="middle">I</text>
+        <defs>
+          <marker id="arrowGreen" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--elec-green)"/></marker>
+          <marker id="arrowYellow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--elec-yellow)"/></marker>
+        </defs>
+      </svg>
+      <div class="circuit-info">
+        <div class="ci-title">SERIES CIRCUIT RULES 串联电路规则</div>
+        <div class="ci-rule">• <strong>Current</strong> is the same through every component: <strong>I is the same everywhere</strong> · <span style="color:rgba(56,189,248,0.7)">电流在每个元件上相同</span></div>
+        <div class="ci-rule">• <strong>Voltage</strong> (pd) is shared: <strong>V = V1 + V2 + V3</strong> · <span style="color:rgba(56,189,248,0.7)">电压（电位差）被分配</span></div>
+        <div class="ci-rule">• <strong>Total resistance</strong> adds up: <strong>R<sub>total</sub> = R1 + R2 + R3</strong> · <span style="color:rgba(56,189,248,0.7)">总电阻相加</span></div>
+        <div style="margin-top:8px;font-size:0.78rem;color:rgba(253,224,71,0.7);font-family:'Space Mono',monospace;">★ Adding more resistors in series INCREASES total resistance 串联更多电阻会增大总电阻</div>
+      </div>
+    </div>
+
+    <!-- PARALLEL -->
+    <div class="circuit-diagram" id="circuit-parallel">
+      <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;height:auto;display:block;margin:0 auto;">
+        <!-- Battery -->
+        <line x1="60" y1="40" x2="60" y2="180" stroke="rgba(238,242,255,0.3)" stroke-width="1.5"/>
+        <line x1="45" y1="95" x2="75" y2="95" stroke="var(--elec-yellow)" stroke-width="3"/>
+        <line x1="50" y1="110" x2="70" y2="110" stroke="var(--elec-yellow)" stroke-width="1.5"/>
+        <!-- Main wires -->
+        <line x1="60" y1="40" x2="520" y2="40" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <line x1="60" y1="180" x2="520" y2="180" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <line x1="520" y1="40" x2="520" y2="180" stroke="rgba(238,242,255,0.5)" stroke-width="2"/>
+        <!-- Branch 1 -->
+        <line x1="180" y1="40" x2="180" y2="80" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <rect x="155" y="80" width="50" height="18" rx="3" fill="none" stroke="var(--elec-blue)" stroke-width="2"/>
+        <text x="180" y="75" fill="var(--elec-blue)" font-size="10" font-family="Space Mono" text-anchor="middle">R1</text>
+        <line x1="180" y1="98" x2="180" y2="180" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <!-- Branch 2 -->
+        <line x1="320" y1="40" x2="320" y2="80" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <rect x="295" y="80" width="50" height="18" rx="3" fill="none" stroke="var(--elec-purple)" stroke-width="2"/>
+        <text x="320" y="75" fill="var(--elec-purple)" font-size="10" font-family="Space Mono" text-anchor="middle">R2</text>
+        <line x1="320" y1="98" x2="320" y2="180" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <!-- Branch 3 -->
+        <line x1="450" y1="40" x2="450" y2="80" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <rect x="425" y="80" width="50" height="18" rx="3" fill="none" stroke="var(--elec-orange)" stroke-width="2"/>
+        <text x="450" y="75" fill="var(--elec-orange)" font-size="10" font-family="Space Mono" text-anchor="middle">R3</text>
+        <line x1="450" y1="98" x2="450" y2="180" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/>
+        <!-- Current labels -->
+        <text x="100" y="35" fill="var(--elec-green)" font-size="10" font-family="Space Mono">I (total)</text>
+        <text x="170" y="130" fill="rgba(56,189,248,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">I1</text>
+        <text x="310" y="130" fill="rgba(192,132,252,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">I2</text>
+        <text x="440" y="130" fill="rgba(251,146,60,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">I3</text>
+      </svg>
+      <div class="circuit-info">
+        <div class="ci-title">PARALLEL CIRCUIT RULES 并联电路规则</div>
+        <div class="ci-rule">• <strong>Voltage</strong> is the same across each branch: <strong>V is the same everywhere</strong> · <span style="color:rgba(56,189,248,0.7)">每个支路电压相同</span></div>
+        <div class="ci-rule">• <strong>Current</strong> splits: <strong>I<sub>total</sub> = I1 + I2 + I3</strong> · <span style="color:rgba(56,189,248,0.7)">电流分流</span></div>
+        <div class="ci-rule">• <strong>Total resistance</strong> is less than the smallest individual resistor · <span style="color:rgba(56,189,248,0.7)">总电阻小于最小的单个电阻（无需计算公式）</span></div>
+        <div style="margin-top:8px;font-size:0.78rem;color:rgba(253,224,71,0.7);font-family:'Space Mono',monospace;">★ Adding more resistors in parallel DECREASES total resistance 并联更多电阻会减小总电阻</div>
+      </div>
+    </div>
+
+    <!-- I-V GRAPHS -->
+    <div class="circuit-diagram" id="circuit-iv">
+      <svg viewBox="0 0 580 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;height:auto;display:block;margin:0 auto;">
+        <!-- Resistor (ohmic) graph -->
+        <g transform="translate(30,20)">
+          <line x1="0" y1="100" x2="140" y2="100" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <line x1="70" y1="190" x2="70" y2="10" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <line x1="20" y1="180" x2="120" y2="20" stroke="var(--elec-green)" stroke-width="2.5"/>
+          <text x="70" y="205" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">V (volts)</text>
+          <text x="15" y="100" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">I</text>
+          <text x="70" y="10" fill="var(--elec-green)" font-size="11" font-family="Space Mono" text-anchor="middle">Resistor</text>
+          <text x="70" y="22" fill="rgba(74,222,128,0.6)" font-size="9" font-family="Noto Sans SC" text-anchor="middle">电阻（欧姆）</text>
+          <text x="70" y="218" fill="rgba(74,222,128,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">straight line 直线</text>
+          <defs><marker id="arrowGrey" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(238,242,255,0.3)"/></marker></defs>
+        </g>
+        <!-- Filament Lamp graph -->
+        <g transform="translate(215,20)">
+          <line x1="0" y1="100" x2="140" y2="100" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <line x1="70" y1="190" x2="70" y2="10" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <path d="M20,180 C35,165 45,140 55,118 C65,95 75,78 90,60 C100,48 110,38 120,28" fill="none" stroke="var(--elec-yellow)" stroke-width="2.5"/>
+          <text x="70" y="205" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">V (volts)</text>
+          <text x="15" y="100" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">I</text>
+          <text x="70" y="10" fill="var(--elec-yellow)" font-size="11" font-family="Space Mono" text-anchor="middle">Lamp 灯泡</text>
+          <text x="70" y="218" fill="rgba(253,224,71,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">curve — R increases</text>
+        </g>
+        <!-- Diode graph -->
+        <g transform="translate(400,20)">
+          <line x1="0" y1="100" x2="140" y2="100" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <line x1="70" y1="190" x2="70" y2="10" stroke="rgba(238,242,255,0.3)" stroke-width="1.5" marker-end="url(#arrowGrey)"/>
+          <!-- Reverse: flat line -->
+          <line x1="20" y1="100" x2="68" y2="100" stroke="var(--elec-purple)" stroke-width="2.5"/>
+          <!-- Forward: steep curve -->
+          <path d="M72,100 C75,99 80,97 85,90 C92,78 100,55 110,30" fill="none" stroke="var(--elec-purple)" stroke-width="2.5"/>
+          <text x="70" y="205" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">V (volts)</text>
+          <text x="15" y="100" fill="rgba(238,242,255,0.5)" font-size="10" font-family="Space Mono" text-anchor="middle">I</text>
+          <text x="70" y="10" fill="var(--elec-purple)" font-size="11" font-family="Space Mono" text-anchor="middle">Diode 二极管</text>
+          <text x="70" y="218" fill="rgba(192,132,252,0.7)" font-size="9" font-family="Space Mono" text-anchor="middle">one direction only</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EQUATIONS ══ -->
+<div class="section" id="section-equations">
+  <div class="section-title">Equations</div>
+  <div class="section-cn">公式 — AQA 4.2 has the most equations of any topic · 本章节公式最多</div>
+
+  <div style="background:rgba(253,224,71,0.07);border:1px solid rgba(253,224,71,0.2);border-radius:10px;padding:11px 17px;margin-bottom:16px;font-size:0.8rem;color:rgba(238,242,255,0.62);line-height:1.6;">
+    <span style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);color:var(--elec-red);font-family:'Space Mono',monospace;font-size:0.65rem;padding:2px 6px;border-radius:7px;">MUST RECALL</span> = memorise it.
+    <span style="background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.28);color:var(--elec-green);font-family:'Space Mono',monospace;font-size:0.65rem;padding:2px 6px;border-radius:7px;">GIVEN</span> = provided on equation sheet in the exam.
+    <span class="ht-badge">HT</span> = Higher Tier only.
+  </div>
+
+  <!-- Q = It -->
+  <div class="eq-card">
+    <div class="eq-name">Charge Flow 电荷流动 <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.1.2</div>
+    <div class="eq-formula">Q = I × t</div>
+    <div class="eq-vars"><span>Q</span> = charge flow 电荷量 (C, coulombs 库仑)<br><span>I</span> = current 电流 (A, amperes 安培)<br><span>t</span> = time 时间 (s, seconds 秒)</div>
+    <div class="worked-ex">
+      <div class="we-title">WORKED EXAMPLE 解题示例</div>
+      <div class="we-body">A current of 3 A flows for 20 s. Calculate the charge flow.<br><span class="step">Q = I × t = 3 × 20 = 60 C</span></div>
+      <div class="we-cn">3 A的电流流动20秒。计算电荷流量。Q = 3 × 20 = 60 C</div>
+    </div>
+  </div>
+
+  <!-- V = IR -->
+  <div class="eq-card">
+    <div class="eq-name">Ohm's Law / Resistance 欧姆定律 <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.1.3</div>
+    <div class="eq-formula">V = I × R</div>
+    <div class="eq-vars"><span>V</span> = potential difference 电位差 (V, volts 伏特)<br><span>I</span> = current 电流 (A)<br><span>R</span> = resistance 电阻 (Ω, ohms 欧姆)</div>
+    <div class="worked-ex">
+      <div class="we-title">WORKED EXAMPLE 解题示例</div>
+      <div class="we-body">A resistor has resistance 15 Ω. Current through it is 2 A. Calculate the pd.<br><span class="step">V = I × R = 2 × 15 = 30 V</span></div>
+      <div class="we-cn">一个电阻器的阻值为15 Ω，通过的电流为2 A。计算电位差。V = 2 × 15 = 30 V</div>
+    </div>
+  </div>
+
+  <!-- Series resistance -->
+  <div class="eq-card">
+    <div class="eq-name">Resistors in Series 串联电阻 <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.2</div>
+    <div class="eq-formula">R<sub>total</sub> = R1 + R2</div>
+    <div class="eq-vars"><span>R<sub>total</sub></span> = total resistance 总电阻 (Ω)<br>Note: students are <strong>NOT</strong> required to calculate total resistance for parallel resistors. 注：不要求计算并联电阻的总阻值。</div>
+  </div>
+
+  <!-- P = VI and P = I²R -->
+  <div class="eq-card">
+    <div class="eq-name">Power 电功率 <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.4.1</div>
+    <div class="eq-formula">P = V × I &nbsp;&nbsp;&nbsp; P = I² × R</div>
+    <div class="eq-vars"><span>P</span> = power 功率 (W, watts 瓦特)<br><span>V</span> = potential difference 电位差 (V)<br><span>I</span> = current 电流 (A)<br><span>R</span> = resistance 电阻 (Ω)</div>
+    <div class="worked-ex">
+      <div class="we-title">WORKED EXAMPLE 解题示例</div>
+      <div class="we-body">A kettle runs at 230 V with a current of 9 A. Calculate power.<br><span class="step">P = V × I = 230 × 9 = 2070 W</span><br>Or using P = I²R: if R = 25.6 Ω → P = 9² × 25.6 = 2073 W ✓</div>
+      <div class="we-cn">一个水壶在230 V下以9 A运行。计算功率。P = 230 × 9 = 2070 W</div>
+    </div>
+  </div>
+
+  <!-- E = Pt -->
+  <div class="eq-card">
+    <div class="eq-name">Energy (from Power) 能量（由功率） <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.4.2</div>
+    <div class="eq-formula">E = P × t</div>
+    <div class="eq-vars"><span>E</span> = energy transferred 转移能量 (J, joules 焦耳)<br><span>P</span> = power 功率 (W)<br><span>t</span> = time 时间 (s)</div>
+    <div class="worked-ex">
+      <div class="we-title">WORKED EXAMPLE 解题示例</div>
+      <div class="we-body">A 100 W lamp runs for 30 s. How much energy is transferred?<br><span class="step">E = P × t = 100 × 30 = 3000 J</span></div>
+      <div class="we-cn">一个100 W的灯泡运行30秒。转移多少能量？E = 100 × 30 = 3000 J</div>
+    </div>
+  </div>
+
+  <!-- E = QV -->
+  <div class="eq-card">
+    <div class="eq-name">Energy (from Charge) 能量（由电荷） <span class="eq-badge recall">MUST RECALL</span></div>
+    <div class="spec-ref">AQA 4.2.4.2</div>
+    <div class="eq-formula">E = Q × V</div>
+    <div class="eq-vars"><span>E</span> = energy transferred 转移能量 (J)<br><span>Q</span> = charge 电荷量 (C)<br><span>V</span> = potential difference 电位差 (V)</div>
+    <div class="worked-ex">
+      <div class="we-title">WORKED EXAMPLE 解题示例</div>
+      <div class="we-body">A charge of 50 C passes through a pd of 12 V. Calculate energy transferred.<br><span class="step">E = Q × V = 50 × 12 = 600 J</span></div>
+      <div class="we-cn">50 C的电荷通过12 V的电位差。计算转移的能量。E = 50 × 12 = 600 J</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ GLOSSARY ══ -->
+<div class="section" id="section-glossary">
+  <div class="section-title">Full Glossary</div>
+  <div class="section-cn">完整词汇表 — Search in English or Chinese · 用英文或中文搜索</div>
+  <input type="text" class="search-box" id="glossarySearch" placeholder="Search / 搜索..." oninput="filterGlossary()">
+  <table class="glossary-table">
+    <thead><tr><th>English Term</th><th>中文 / Pinyin</th><th>Definition 定义</th></tr></thead>
+    <tbody id="glossaryBody"></tbody>
+  </table>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="section" id="section-quiz">
+  <div class="section-title">Revision Quiz</div>
+  <div class="section-cn">复习测验 — 12 questions covering AQA 4.2 · 12道AQA电学题</div>
+  <div class="quiz-container">
+    <div id="quizActive">
+      <div class="quiz-progress">
+        <div class="progress-text" id="qProgress">Q1 / 12</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:8%"></div></div>
+        <div class="score-display" id="scoreDisplay">Score: 0</div>
+      </div>
+      <div class="question-box">
+        <div class="question-text" id="questionText"></div>
+        <div class="question-cn" id="questionCN"></div>
+      </div>
+      <div class="options-grid" id="optionsGrid"></div>
+      <div class="feedback-box" id="feedbackBox"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question &#8594; 下一题</button>
+    </div>
+    <div class="quiz-result" id="quizResult">
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-msg" id="resultMsg"></div>
+      <div class="result-cn" id="resultCN"></div>
+      <button class="restart-btn" onclick="restartQuiz()">Restart Quiz 重新开始</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ══ NAVIGATION ══
+function showTab(e, id) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('section-' + id).classList.add('active');
+  e.currentTarget.classList.add('active');
+}
+function toggleCard(card){ card.classList.toggle('expanded'); }
+
+// ══ CIRCUIT SYMBOLS ══
+var symbols = [
+  {name:'Cell', cn:'电池', py:'diàn chí', fn:'Source of electrical energy. Long line = positive terminal.',
+   svg:'<line x1="25" y1="20" x2="25" y2="40" stroke="#fde047" stroke-width="3"/><line x1="35" y1="15" x2="35" y2="45" stroke="#fde047" stroke-width="1.5"/><line x1="5" y1="30" x2="25" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="35" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Battery', cn:'电池组', py:'diàn chí zǔ', fn:'Two or more cells in series. Provides a larger potential difference.',
+   svg:'<line x1="15" y1="20" x2="15" y2="40" stroke="#fde047" stroke-width="3"/><line x1="23" y1="15" x2="23" y2="45" stroke="#fde047" stroke-width="1.5"/><line x1="31" y1="20" x2="31" y2="40" stroke="#fde047" stroke-width="3"/><line x1="39" y1="15" x2="39" y2="45" stroke="#fde047" stroke-width="1.5"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="39" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Resistor', cn:'电阻器', py:'diàn zǔ qì', fn:'Component that resists current flow. Fixed resistance.',
+   svg:'<rect x="15" y="20" width="30" height="20" rx="2" fill="none" stroke="#38bdf8" stroke-width="2"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Variable Resistor', cn:'可变电阻', py:'kě biàn diàn zǔ', fn:'Resistance can be changed. Used as volume controls, dimmer switches.',
+   svg:'<rect x="15" y="20" width="30" height="20" rx="2" fill="none" stroke="#38bdf8" stroke-width="2"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="30" y1="40" x2="42" y2="18" stroke="#fde047" stroke-width="1.5" marker-end="url(#ay)"/><defs><marker id="ay" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5z" fill="#fde047"/></marker></defs>'},
+  {name:'Lamp', cn:'灯泡', py:'dēng pào', fn:'Converts electrical energy to light and heat. Non-ohmic component.',
+   svg:'<circle cx="30" cy="30" r="15" fill="none" stroke="#fde047" stroke-width="2"/><line x1="22" y1="22" x2="38" y2="38" stroke="#fde047" stroke-width="1.5"/><line x1="38" y1="22" x2="22" y2="38" stroke="#fde047" stroke-width="1.5"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Switch (open)', cn:'开关（断开）', py:'kāi guān', fn:'An open switch breaks the circuit — no current flows.',
+   svg:'<line x1="5" y1="30" x2="22" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><circle cx="22" cy="30" r="2" fill="#fde047"/><line x1="22" y1="30" x2="40" y2="20" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><circle cx="40" cy="30" r="2" fill="#fde047"/><line x1="40" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Ammeter', cn:'电流表', py:'diàn liú biǎo', fn:'Measures current. Connected in SERIES. Has very low resistance.',
+   svg:'<circle cx="30" cy="30" r="15" fill="none" stroke="#4ade80" stroke-width="2"/><text x="30" y="35" fill="#4ade80" font-size="13" font-family="Space Mono" text-anchor="middle" font-weight="bold">A</text><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Voltmeter', cn:'电压表', py:'diàn yā biǎo', fn:'Measures potential difference. Connected in PARALLEL. Has very high resistance.',
+   svg:'<circle cx="30" cy="30" r="15" fill="none" stroke="#f87171" stroke-width="2"/><text x="30" y="35" fill="#f87171" font-size="13" font-family="Space Mono" text-anchor="middle" font-weight="bold">V</text><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Diode', cn:'二极管', py:'èr jí guǎn', fn:'Allows current in one direction only. Very high resistance in reverse.',
+   svg:'<polygon points="15,20 15,40 35,30" fill="rgba(192,132,252,0.3)" stroke="#c084fc" stroke-width="2"/><line x1="35" y1="20" x2="35" y2="40" stroke="#c084fc" stroke-width="2"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="35" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'LED', cn:'发光二极管', py:'fā guāng èr jí guǎn', fn:'Light Emitting Diode. Allows current one way and emits light.',
+   svg:'<polygon points="15,20 15,40 35,30" fill="rgba(253,224,71,0.2)" stroke="#fde047" stroke-width="2"/><line x1="35" y1="20" x2="35" y2="40" stroke="#fde047" stroke-width="2"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="35" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="38" y1="24" x2="46" y2="16" stroke="#fde047" stroke-width="1.5" marker-end="url(#ay)"/><line x1="42" y1="28" x2="50" y2="20" stroke="#fde047" stroke-width="1.5" marker-end="url(#ay)"/>'},
+  {name:'Thermistor', cn:'热敏电阻', py:'rè mǐn diàn zǔ', fn:'Resistance decreases as temperature increases. Used in thermostats.',
+   svg:'<rect x="15" y="20" width="30" height="20" rx="2" fill="none" stroke="#fb923c" stroke-width="2"/><text x="30" y="35" fill="#fb923c" font-size="11" font-family="Space Mono" text-anchor="middle">&#952;</text><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'LDR', cn:'光敏电阻', py:'guāng mǐn diàn zǔ', fn:'Resistance decreases as light intensity increases. Used in light-sensing circuits.',
+   svg:'<rect x="15" y="20" width="30" height="20" rx="2" fill="none" stroke="#fde047" stroke-width="2"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="24" y1="14" x2="18" y2="8" stroke="#fde047" stroke-width="1.5" marker-end="url(#ay)"/><line x1="32" y1="12" x2="26" y2="6" stroke="#fde047" stroke-width="1.5" marker-end="url(#ay)"/>'},
+  {name:'Fuse', cn:'保险丝', py:'bǎo xiǎn sī', fn:'Safety device. Melts and breaks the circuit if current is too high.',
+   svg:'<rect x="15" y="24" width="30" height="12" rx="2" fill="none" stroke="#f87171" stroke-width="2"/><line x1="15" y1="30" x2="45" y2="30" stroke="#f87171" stroke-width="1.5"/><line x1="5" y1="30" x2="15" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="45" y1="30" x2="55" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/>'},
+  {name:'Earth', cn:'接地', py:'jiē dì', fn:'Connection to earth (0 V). Safety connection in mains circuits.',
+   svg:'<line x1="30" y1="10" x2="30" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="1.5"/><line x1="15" y1="30" x2="45" y2="30" stroke="rgba(238,242,255,0.5)" stroke-width="2"/><line x1="20" y1="38" x2="40" y2="38" stroke="rgba(238,242,255,0.4)" stroke-width="1.5"/><line x1="25" y1="46" x2="35" y2="46" stroke="rgba(238,242,255,0.3)" stroke-width="1.5"/>'},
+];
+
+function buildSymbols() {
+  var grid = document.getElementById('symbolsGrid');
+  grid.innerHTML = symbols.map(function(s, i) {
+    return '<div class="sym-card" onclick="showSymInfo(' + i + ')">' +
+      '<svg viewBox="0 0 60 60" width="60" height="60" xmlns="http://www.w3.org/2000/svg">' + s.svg + '</svg>' +
+      '<div class="sym-en">' + s.name + '</div><div class="sym-cn">' + s.cn + '</div>' +
+      '<div class="sym-py">' + s.py + '</div></div>';
+  }).join('');
+}
+buildSymbols();
+
+function showSymInfo(idx) {
+  var s = symbols[idx];
+  var box = document.getElementById('symInfoBox');
+  document.getElementById('symInfoContent').innerHTML =
+    '<div style="font-family:\'Space Mono\',monospace;color:var(--elec-yellow);font-size:0.85rem;margin-bottom:3px;">' + s.name + '</div>' +
+    '<div style="font-size:1rem;color:var(--text);margin-bottom:3px;">' + s.cn + ' <span style="font-size:0.72rem;color:var(--muted);font-style:italic;">' + s.py + '</span></div>' +
+    '<div style="font-size:0.84rem;color:rgba(238,242,255,0.8);line-height:1.6;">' + s.fn + '</div>';
+  box.style.display = 'block';
+}
+
+// ══ CIRCUITS ══
+function showCircuit(e, key) {
+  document.querySelectorAll('.circuit-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.circuit-diagram').forEach(function(d){ d.classList.remove('active'); });
+  e.currentTarget.classList.add('active');
+  document.getElementById('circuit-' + key).classList.add('active');
+}
+
+// ══ GLOSSARY ══
+var glossaryData = [
+  {en:'Electric Current', cn:'电流', py:'diàn liú', def:'The rate of flow of electric charge. Q = It. Unit: ampere (A).', defCN:'电荷流动的速率。Q = It。单位：安培（A）。'},
+  {en:'Potential Difference (pd)', cn:'电位差', py:'diàn wèi chā', def:'The energy transferred per unit charge between two points. Also called voltage. Unit: volt (V).', defCN:'两点之间每单位电荷转移的能量。也叫电压。单位：伏特（V）。'},
+  {en:'Resistance', cn:'电阻', py:'diàn zǔ', def:'How much a component opposes current flow. V = IR. Unit: ohm (Ω).', defCN:'元件阻碍电流流动的程度。V = IR。单位：欧姆（Ω）。'},
+  {en:'Coulomb', cn:'库仑', py:'kù lún', def:'The unit of electric charge. Symbol: C. 1 coulomb = charge passing a point when 1 A flows for 1 s.', defCN:'电荷的单位。符号：C。1库仑 = 1 A流动1秒时通过某点的电荷量。'},
+  {en:'Ohmic Conductor', cn:'欧姆导体', py:'ōu mǔ dǎo tǐ', def:'A component where current is directly proportional to pd at constant temperature. I-V graph is a straight line through the origin.', defCN:'在恒温下电流与电位差成正比的元件。I-V图是过原点的直线。'},
+  {en:'Filament Lamp', cn:'灯丝灯泡', py:'dēng sī dēng pào', def:'Non-ohmic component. Resistance increases as temperature increases. I-V graph is a curve.', defCN:'非欧姆元件。温度升高时电阻增大。I-V图是曲线。'},
+  {en:'Diode', cn:'二极管', py:'èr jí guǎn', def:'Allows current to flow in one direction only. Very high resistance in reverse direction.', defCN:'只允许电流在一个方向流动。反向阻值极大。'},
+  {en:'Thermistor', cn:'热敏电阻', py:'rè mǐn diàn zǔ', def:'Resistance decreases as temperature increases. Used in thermostats.', defCN:'温度升高时电阻减小。用于温控器。'},
+  {en:'LDR', cn:'光敏电阻', py:'guāng mǐn diàn zǔ', def:'Light-Dependent Resistor. Resistance decreases as light intensity increases.', defCN:'光敏电阻。光照强度增大时电阻减小。'},
+  {en:'Series Circuit', cn:'串联电路', py:'chuàn lián diàn lù', def:'Components connected in a single loop. Same current everywhere. Voltage shared. Total R = R1 + R2.', defCN:'元件连接成单一回路。电流处处相同。电压被分配。总电阻 = R1 + R2。'},
+  {en:'Parallel Circuit', cn:'并联电路', py:'bìng lián diàn lù', def:'Components connected across the same two points. Same voltage across each branch. Current splits. Total R is less than the smallest.', defCN:'元件连接在相同两点之间。每个支路电压相同。电流分流。总电阻小于最小的单个电阻。'},
+  {en:'Direct Current (DC)', cn:'直流电', py:'zhí liú diàn', def:'Current that flows in one direction only. Produced by batteries.', defCN:'只在一个方向流动的电流。由电池产生。'},
+  {en:'Alternating Current (AC)', cn:'交流电', py:'jiāo liú diàn', def:'Current that repeatedly reverses direction. UK mains: 230 V, 50 Hz.', defCN:'反复改变方向的电流。英国市电：230 V，50 Hz。'},
+  {en:'Live Wire', cn:'火线', py:'huǒ xiàn', def:'Brown wire in mains cable. Carries the alternating pd (~230 V). Dangerous even when switch is open.', defCN:'市电电缆中的棕色导线。携带交变电位差（约230 V）。即使开关断开也是危险的。'},
+  {en:'Neutral Wire', cn:'零线', py:'líng xiàn', def:'Blue wire in mains cable. Completes the circuit at approximately 0 V.', defCN:'市电电缆中的蓝色导线。在约0 V下完成电路。'},
+  {en:'Earth Wire', cn:'地线', py:'dì xiàn', def:'Green and yellow striped wire. Safety wire that only carries current if there is a fault.', defCN:'绿色和黄色条纹导线。只有在发生故障时才导电的安全线。'},
+  {en:'Power', cn:'电功率', py:'diàn gōng lǜ', def:'The rate of energy transfer. P = VI and P = I²R. Unit: watt (W).', defCN:'能量转移的速率。P = VI 和 P = I²R。单位：瓦特（W）。'},
+  {en:'Energy', cn:'能量', py:'néng liàng', def:'E = Pt (energy = power x time). Also E = QV. Unit: joule (J).', defCN:'E = Pt（能量 = 功率 × 时间）。也有 E = QV。单位：焦耳（J）。'},
+  {en:'Ammeter', cn:'电流表', py:'diàn liú biǎo', def:'Measures current. Connected in SERIES. Has very low resistance so it does not change the circuit.', defCN:'测量电流。串联连接。阻值极低，不会改变电路。'},
+  {en:'Voltmeter', cn:'电压表', py:'diàn yā biǎo', def:'Measures potential difference. Connected in PARALLEL. Has very high resistance so very little current flows through it.', defCN:'测量电位差。并联连接。阻值极高，几乎没有电流通过。'},
+  {en:'I-V Characteristic', cn:'I-V特性曲线', py:'I-V tè xìng qū xiàn', def:'A graph of current (I) against potential difference (V) for a component. The shape reveals whether the component is ohmic or non-ohmic.', defCN:'元件的电流（I）与电位差（V）的关系图。形状揭示元件是否为欧姆型。'},
+  {en:'Fuse', cn:'保险丝', py:'bǎo xiǎn sī', def:'A safety device with a thin wire that melts if current exceeds a safe level, breaking the circuit.', defCN:'安全装置，其细导线在电流超过安全水平时熔断，断开电路。'},
+];
+
+function populateGlossary(data) {
+  document.getElementById('glossaryBody').innerHTML = data.map(function(item) {
+    return '<tr><td><div class="gl-en">' + item.en + '</div></td>' +
+           '<td><div class="gl-cn">' + item.cn + '</div><div class="gl-py">' + item.py + '</div></td>' +
+           '<td><div class="gl-def">' + item.def + '</div><div class="gl-def-cn">' + item.defCN + '</div></td></tr>';
+  }).join('');
+}
+function filterGlossary() {
+  var q = document.getElementById('glossarySearch').value.toLowerCase();
+  populateGlossary(glossaryData.filter(function(item) {
+    return item.en.toLowerCase().includes(q) || item.cn.includes(q) || item.py.toLowerCase().includes(q) || item.def.toLowerCase().includes(q);
+  }));
+}
+populateGlossary(glossaryData);
+
+// ══ QUIZ ══
+var quizQuestions = [
+  {q:'A current of 5 A flows for 40 seconds. What is the charge flow?',
+   qCN:'5 A的电流流动40秒，电荷流量是多少？',
+   opts:[{t:'8 C',c:false},{t:'200 C 正确',c:true},{t:'45 C',c:false},{t:'0.125 C',c:false}],
+   fb:'Q = I x t = 5 x 40 = 200 C. Always use Q = It for charge flow calculations.',
+   fbCN:'Q = I × t = 5 × 40 = 200 C。计算电荷流量始终使用Q = It。'},
+
+  {q:'A resistor has a resistance of 20 Ω and a pd of 60 V across it. What is the current?',
+   qCN:'一个电阻器阻值为20 Ω，两端电位差为60 V，电流是多少？',
+   opts:[{t:'1200 A',c:false},{t:'0.33 A',c:false},{t:'3 A 正确',c:true},{t:'80 A',c:false}],
+   fb:'V = IR, so I = V/R = 60/20 = 3 A. Rearrange V = IR to find any quantity.',
+   fbCN:'V = IR，所以I = V/R = 60/20 = 3 A。重排V = IR可以求任何量。'},
+
+  {q:'In a series circuit with two resistors of 6 Ω and 4 Ω, what is the total resistance?',
+   qCN:'一个串联电路有两个电阻器，分别为6 Ω和4 Ω，总电阻是多少？',
+   opts:[{t:'2.4 Ω',c:false},{t:'10 Ω 正确',c:true},{t:'5 Ω',c:false},{t:'24 Ω',c:false}],
+   fb:'In series: Rtotal = R1 + R2 = 6 + 4 = 10 Ω. In parallel, total R would be LESS than 4 Ω (the smaller resistor).',
+   fbCN:'串联：Rtotal = R1 + R2 = 6 + 4 = 10 Ω。并联时，总电阻会小于4 Ω（较小的电阻器）。'},
+
+  {q:'What is the I-V graph for an ohmic conductor (resistor at constant temperature)?',
+   qCN:'欧姆导体（恒温下的电阻器）的I-V图是什么形状？',
+   opts:[{t:'A curved line 曲线',c:false},{t:'A straight line through the origin 过原点的直线',c:true},{t:'A horizontal line 水平线',c:false},{t:'An S-shaped curve S形曲线',c:false}],
+   fb:'An ohmic conductor has a straight line through the origin on an I-V graph. This shows that current is directly proportional to pd — constant resistance.',
+   fbCN:'欧姆导体在I-V图上是过原点的直线。这表明电流与电位差成正比——电阻不变。'},
+
+  {q:'What colour is the live wire in UK mains cables?',
+   qCN:'英国市电电缆中火线是什么颜色？',
+   opts:[{t:'Blue 蓝色',c:false},{t:'Green and yellow 绿色和黄色',c:false},{t:'Brown 棕色',c:true},{t:'Red 红色',c:false}],
+   fb:'UK mains: Live = Brown, Neutral = Blue, Earth = Green/Yellow. Remember: B for Brown = Live (Burns you!)',
+   fbCN:'英国市电：火线=棕色，零线=蓝色，地线=绿/黄色。记忆：棕色=火线（危险！）。'},
+
+  {q:'An appliance has a power of 2000 W and runs for 5 minutes (300 s). How much energy is transferred?',
+   qCN:'一个电器功率为2000 W，运行5分钟（300秒），转移了多少能量？',
+   opts:[{t:'6.67 J',c:false},{t:'600,000 J 正确',c:true},{t:'10 J',c:false},{t:'400 J',c:false}],
+   fb:'E = P x t = 2000 x 300 = 600,000 J (600 kJ). Always convert minutes to seconds first.',
+   fbCN:'E = P × t = 2000 × 300 = 600,000 J（600 kJ）。记得先将分钟换算为秒。'},
+
+  {q:'A component has a current of 3 A through it and a resistance of 8 Ω. What is its power?',
+   qCN:'一个元件通过的电流为3 A，电阻为8 Ω，功率是多少？',
+   opts:[{t:'24 W',c:false},{t:'72 W 正确',c:true},{t:'11 W',c:false},{t:'2.67 W',c:false}],
+   fb:'P = I squared x R = 3 squared x 8 = 9 x 8 = 72 W. Use P = I squared R when you know I and R but not V.',
+   fbCN:'P = I² × R = 3² × 8 = 9 × 8 = 72 W。当已知I和R但不知V时使用P = I²R。'},
+
+  {q:'In a parallel circuit, what is true about the potential difference across each branch?',
+   qCN:'在并联电路中，每个支路的电位差有什么规律？',
+   opts:[{t:'It is shared between branches 被各支路分配',c:false},{t:'It is the same across all branches 所有支路相同',c:true},{t:'It increases with each branch 随支路增加',c:false},{t:'It is zero in each branch 每个支路为零',c:false}],
+   fb:'In parallel circuits, the pd (voltage) is the same across every branch — they are all connected between the same two points. The current, however, splits between branches.',
+   fbCN:'在并联电路中，每个支路的电位差（电压）相同——它们都连接在相同的两点之间。然而，电流在各支路之间分流。'},
+
+  {q:'What happens to the resistance of a thermistor as temperature INCREASES?',
+   qCN:'热敏电阻的阻值随温度升高会发生什么？',
+   opts:[{t:'Resistance increases 电阻增大',c:false},{t:'Resistance stays the same 电阻不变',c:false},{t:'Resistance decreases 电阻减小',c:true},{t:'Resistance becomes zero 电阻变为零',c:false}],
+   fb:'A thermistor has decreasing resistance as temperature increases. This is the opposite of a filament lamp (where resistance increases with temperature).',
+   fbCN:'热敏电阻的阻值随温度升高而减小。这与灯丝灯泡相反（灯丝灯泡的阻值随温度升高而增大）。'},
+
+  {q:'A charge of 30 C passes through a potential difference of 12 V. How much energy is transferred?',
+   qCN:'30 C的电荷通过12 V的电位差，转移了多少能量？',
+   opts:[{t:'2.5 J',c:false},{t:'18 J',c:false},{t:'42 J',c:false},{t:'360 J 正确',c:true}],
+   fb:'E = Q x V = 30 x 12 = 360 J. This equation links energy to charge and voltage directly.',
+   fbCN:'E = Q × V = 30 × 12 = 360 J。这个公式直接将能量与电荷和电压联系起来。'},
+
+  {q:'Why is adding resistors in parallel said to DECREASE total resistance?',
+   qCN:'为什么并联更多电阻会减小总电阻？',
+   opts:[{t:'Because voltage decreases 因为电压减小',c:false},{t:'Because each new branch provides an additional path for current, increasing total current for the same voltage 每个新支路为电流提供额外路径，在相同电压下增大总电流',c:true},{t:'Because resistance cancels out 因为电阻抵消',c:false},{t:'Because the wires get shorter 因为导线变短',c:false}],
+   fb:'Adding parallel branches gives current more paths to flow through. More total current flows for the same voltage, which means R = V/I gives a smaller total resistance.',
+   fbCN:'增加并联支路为电流提供更多流通路径。在相同电压下流过更多总电流，这意味着R = V/I给出更小的总电阻。'},
+
+  {q:'The neutral wire in a mains circuit is described as being at which potential?',
+   qCN:'市电电路中零线处于什么电位？',
+   opts:[{t:'230 V',c:false},{t:'110 V',c:false},{t:'0 V (earth potential) 地电位',c:true},{t:'-230 V',c:false}],
+   fb:'The neutral wire is at, or close to, earth potential (0 V). The live wire carries the 230 V alternating pd. The earth wire is also at 0 V but only carries current if there is a fault.',
+   fbCN:'零线处于地电位（0 V）或接近地电位。火线携带230 V的交变电位差。地线也处于0 V，但只有在发生故障时才导电。'},
+];
+
+var currentQ = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  var q = quizQuestions[currentQ];
+  document.getElementById('qProgress').textContent = 'Q' + (currentQ+1) + ' / ' + quizQuestions.length;
+  document.getElementById('progressFill').style.width = (((currentQ+1)/quizQuestions.length)*100) + '%';
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('questionCN').textContent = q.qCN;
+  document.getElementById('feedbackBox').className = 'feedback-box';
+  document.getElementById('feedbackBox').innerHTML = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+  answered = false;
+  document.getElementById('optionsGrid').innerHTML = q.opts.map(function(opt, i) {
+    return '<button class="option-btn" onclick="selectAnswer(this,' + opt.c + ',' + i + ')">' + opt.t + '</button>';
+  }).join('');
+}
+
+function selectAnswer(btn, correct, idx) {
+  if (answered) return;
+  answered = true;
+  var q = quizQuestions[currentQ];
+  document.querySelectorAll('.option-btn').forEach(function(b, i) {
+    b.disabled = true;
+    if (quizQuestions[currentQ].opts[i].c) b.classList.add('correct');
+  });
+  var fb = document.getElementById('feedbackBox');
+  if (correct) {
+    score++;
+    btn.classList.add('correct');
+    document.getElementById('scoreDisplay').textContent = 'Score: ' + score;
+    fb.className = 'feedback-box correct show';
+    fb.innerHTML = '&#10003; Correct! &#27491;&#30830;&#65281;<br><small>' + q.fb + '</small><br><small style="color:rgba(74,222,128,0.7)">' + q.fbCN + '</small>';
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'feedback-box wrong show';
+    fb.innerHTML = '&#10007; Not quite. &#19981;&#22826;&#23545;&#12290;<br><small>' + q.fb + '</small><br><small style="color:rgba(248,113,113,0.7)">' + q.fbCN + '</small>';
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizQuestions.length) { showResult(); } else { loadQuestion(); }
+}
+
+function showResult() {
+  document.getElementById('quizActive').style.display = 'none';
+  var res = document.getElementById('quizResult');
+  res.className = 'quiz-result show';
+  var pct = Math.round((score/quizQuestions.length)*100);
+  document.getElementById('resultScore').textContent = score + ' / ' + quizQuestions.length;
+  var msg, cn;
+  if (pct >= 80) { msg = 'Excellent! Outstanding work! &#127775;'; cn = '&#22826;&#26834;&#20102;&#65281;&#25104;&#32489;&#20511;&#31199;&#65281;'; }
+  else if (pct >= 60) { msg = 'Good effort! Keep revising. &#128077;'; cn = '&#24456;&#22909;&#65281;&#32487;&#32493;&#22797;&#32722;&#12290;'; }
+  else { msg = 'Keep practising! &#128170;'; cn = '&#32487;&#32493;&#32451;&#20064;&#65281;'; }
+  document.getElementById('resultMsg').innerHTML = msg;
+  document.getElementById('resultCN').innerHTML = cn;
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  document.getElementById('scoreDisplay').textContent = 'Score: 0';
+  document.getElementById('quizActive').style.display = 'block';
+  document.getElementById('quizResult').className = 'quiz-result';
+  loadQuestion();
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
